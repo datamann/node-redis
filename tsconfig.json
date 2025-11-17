@@ -1,0 +1,29 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/client"
+    },
+    {
+      "path": "./packages/test-utils"
+    },
+    {
+      "path": "./packages/bloom"
+    },
+    {
+      "path": "./packages/json"
+    },
+    {
+      "path": "./packages/search"
+    },
+    {
+      "path": "./packages/time-series"
+    },
+    {
+      "path": "./packages/entraid"
+    },
+    {
+      "path": "./packages/redis"
+    }
+  ]
+}

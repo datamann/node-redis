@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+  },
+  "include": [
+    "./index.ts",
+    "./lib/**/*.ts",
+    "./package.json"
+  ],
+  "exclude": [
+    "./lib/test-utils.ts",
+    "./lib/**/*.spec.ts",
+    "./lib/sentinel/test-util.ts",
+    "./lib/tests/**/*.ts"
+  ],
+  "typedocOptions": {
+    "entryPoints": [
+      "./index.ts",
+      "./lib"
+    ],
+    "entryPointStrategy": "expand",
+    "out": "../../documentation/client",
+  }
+}

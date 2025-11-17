@@ -1,0 +1,21 @@
+{
+  "npm": {
+    "publish": true,
+    "publishArgs": ["--access", "public"]
+  },
+  "git": {
+    "tagName": "client@${version}",
+    "tagMatch": "client@*",
+    "commitMessage": "Release ${tagName}",
+    "tagAnnotation": "Release ${tagName}",
+    "commitArgs": "--all"
+  },
+  "plugins": {
+    "@release-it/bumper": {
+      "out": {
+        "file": "dist/package.json",
+        "path": "version"
+      }
+    }
+  }
+}

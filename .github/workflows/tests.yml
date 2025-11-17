@@ -1,0 +1,52 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - master
+      - v4.0
+      - v5
+    paths-ignore:
+      - "**/*.md"
+  pull_request:
+    branches:
+      - master
+      - v4.0
+      - v5
+    paths-ignore:
+      - "**/*.md"
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["18", "20", "22"]
+        redis-version: ["rs-7.4.0-v1", "8.0.2", "8.2", "8.4-RC1-pre.2"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Update npm
+        run: npm i -g npm
+        if: ${{ matrix.node-version <= 14 }}
+      - name: Install Packages
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Run Tests
+        run: npm run test -ws --if-present -- --forbid-only --redis-version=${{ matrix.redis-version }}
+      - name: Upload to Codecov
+        run: |
+          curl https://keybase.io/codecovsecurity/pgp_keys.asc | gpg --no-default-keyring --keyring trustedkeys.gpg --import
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM
+          curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM.sig
+          gpgv codecov.SHA256SUM.sig codecov.SHA256SUM
+          shasum -a 256 -c codecov.SHA256SUM
+          chmod +x codecov
+          ./codecov
